@@ -27,6 +27,7 @@ class CalibrationReport:
     vec_size: int
     n_warmup: int
     n_trials: int
+    sig_alg: str = "hmac"
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -101,4 +102,5 @@ def run_calibration(
         vec_size=vec_size,
         n_warmup=n_warmup,
         n_trials=n_trials,
+        sig_alg=getattr(signer, "alg", "hmac"),
     )

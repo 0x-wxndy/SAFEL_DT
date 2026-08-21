@@ -297,6 +297,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="Paillier key length when --encryption paillier (default 1024).",
     )
     p.add_argument(
+        "--sig-alg",
+        choices=("hmac", "ecdsa", "mldsa"),
+        default="hmac",
+        help="Update authenticity: hmac | ecdsa | mldsa (ML-DSA-65).",
+    )
+    p.add_argument(
         "--sac-heuristic-hint",
         action="store_true",
         help="(A5) Append the heuristic policy's per-client score to the "
@@ -524,6 +530,7 @@ def _run_one(
             mode=args.encryption,
             paillier_keybits=args.paillier_keybits,
         ),
+        sig_alg=args.sig_alg,
         adversary_features=args.adversary_features,
     )
     outcomes = run_simulation(cfg)

@@ -140,6 +140,8 @@ class SimulatorConfig:
     # hatch used by a handful of unit tests). New code should set
     # ``encryption`` and leave ``channel_factory`` at its default.
     encryption: EncryptionConfig = field(default_factory=EncryptionConfig)
+    # Phase 1 PQ auth: hmac | ecdsa | mldsa (see safel_dt.crypto.signing).
+    sig_alg: str = "hmac"
     channel_factory: Callable[[], SecureChannel] | None = None
     aggregator: str = "fedavg"
     aggregator_options: dict[str, object] = field(default_factory=dict)
@@ -472,7 +474,7 @@ def run_simulation(cfg: SimulatorConfig) -> list[CloudRoundOutcome]:
 
     clients: list[FederatedClient] = []
     for client_id, train_set in enumerate(cfg.client_train_sets):
-        signer = Signer.generate()
+        signer = Signer.generate(cfg.sig_alg)
         clients.append(
             FederatedClient(
                 client_id=client_id,
@@ -531,7 +533,7 @@ def run_simulation(cfg: SimulatorConfig) -> list[CloudRoundOutcome]:
     # downstream tests.
     calibration_report: CalibrationReport | None = None
     if cfg.channel_factory is None and cfg.encryption.calibrate:
-        cal_signer = Signer.generate()
+        cal_signer = Signer.generate(cfg.sig_alg)
         calibration_report = run_calibration(
             channel=channel,
             signer=cal_signer,

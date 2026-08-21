@@ -291,6 +291,13 @@ def main() -> int:
         "(fast for smoke tests); paper canonical is 2048.",
     )
     p.add_argument(
+        "--sig-alg",
+        choices=("hmac", "ecdsa", "mldsa"),
+        default="hmac",
+        help="Update authenticity: hmac (default), ecdsa (P-256 classical), "
+        "mldsa (ML-DSA-65 via liboqs; requires pip install -e '.[pqc]').",
+    )
+    p.add_argument(
         "--sac-heuristic-hint",
         action="store_true",
         help="(A5) Append the heuristic policy's per-client score to the "
@@ -566,6 +573,7 @@ def main() -> int:
             mode=args.encryption,
             paillier_keybits=args.paillier_keybits,
         ),
+        sig_alg=args.sig_alg,
         adversary_features=args.adversary_features,
     )
     print(
@@ -574,6 +582,7 @@ def main() -> int:
         f"reward={args.reward} cloud_policy={args.cloud_policy} "
         f"encryption={args.encryption}"
         + (f":{args.paillier_keybits}b" if args.encryption == "paillier" else "")
+        + f" sig_alg={args.sig_alg}"
         + (" adversary_features=on" if args.adversary_features else "")
     )
     outcomes = run_simulation(cfg)

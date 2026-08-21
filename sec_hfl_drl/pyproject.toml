@@ -54,6 +54,10 @@ dev = [
     "types-PyYAML",
     "ipykernel",
 ]
+pqc = [
+    # FIPS 203/204 via Open Quantum Safe (builds liboqs if needed).
+    "liboqs-python>=0.12",
+]
 
 [project.urls]
 Homepage = "https://example.invalid/safel-dt"
@@ -88,4 +92,5 @@ markers = [
     "requires_nbaiot: needs cached or downloadable N-BaIoT dataset",
     "requires_edge_iiotset: needs cached Edge-IIoTset dataset",
     "requires_toniot: needs cached TON_IoT network-flow CSV",
+    "requires_pqc: needs liboqs-python (pip install -e '.[pqc]')",
 ]

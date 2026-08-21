@@ -61,18 +61,14 @@ def canonical_body(update: EncryptedUpdate) -> bytes:
 
 
 def verify_signed(signed: SignedPayload) -> bool:
-    """Structural signature check (HMAC secret stays with the Signer).
+    """Cryptographic (or structural HMAC) signature check.
 
-    Full cryptographic verify is performed at sign-time by the client.
-    The cloud rejects malformed payloads; cross-node MAC verification
-    would require a PKI which the restored code approximates.
+    ECDSA / ML-DSA use public-key verification. HMAC keeps a structural
+    fallback when the MAC key is not available at the fog/cloud.
     """
-    return (
-        isinstance(signed.payload, (bytes, bytearray))
-        and isinstance(signed.signature, (bytes, bytearray))
-        and len(signed.signature) >= 16
-        and len(signed.public_key) >= 16
-    )
+    from safel_dt.crypto.signing import verify_signature
+
+    return verify_signature(signed)
 
 
 def verify_and_sum(

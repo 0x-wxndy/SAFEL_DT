@@ -4,6 +4,7 @@
 # Usage (from sec_hfl_drl/, venv active):
 #   bash scripts/smoke_prepqc.sh
 #   bash scripts/smoke_prepqc.sh --dataset nbaiot --rounds 20
+#   bash scripts/smoke_prepqc.sh --sig-alg mldsa --out results/runs/smoke_mldsa
 #   SMOKE_DATASET=nbaiot bash scripts/smoke_prepqc.sh
 
 set -euo pipefail
@@ -20,6 +21,7 @@ DATASET="${SMOKE_DATASET:-synthetic}"
 SEED="${SMOKE_SEED:-0}"
 DATA_DIR="${SMOKE_DATA_DIR:-results/data}"
 OUT="${SMOKE_OUT:-}"
+SIG_ALG="${SMOKE_SIG_ALG:-hmac}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -27,6 +29,7 @@ while [[ $# -gt 0 ]]; do
     --dataset) DATASET="$2"; shift 2 ;;
     --out) OUT="$2"; shift 2 ;;
     --data-dir) DATA_DIR="$2"; shift 2 ;;
+    --sig-alg) SIG_ALG="$2"; shift 2 ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
   esac
 done
@@ -45,7 +48,7 @@ r3=$(( ROUNDS * 250 / 300 ))
 [[ "$r3" -ge "$ROUNDS" ]] && r3=$(( ROUNDS - 1 ))
 STEPWISE="0:0.10,${r1}:0.15,${r2}:0.20,${r3}:0.25"
 
-echo "[smoke_prepqc] dataset=${DATASET} rounds=${ROUNDS} out=${OUT} data_dir=${DATA_DIR}"
+echo "[smoke_prepqc] dataset=${DATASET} rounds=${ROUNDS} out=${OUT} data_dir=${DATA_DIR} sig_alg=${SIG_ALG}"
 echo "[smoke_prepqc] stepwise=${STEPWISE}"
 
 mkdir -p "$OUT"
@@ -81,6 +84,7 @@ python -u -m scripts.run_sweep \
   --attack-stepwise "$STEPWISE" \
   --mixed-gamma-range 10 50 \
   --encryption plain \
+  --sig-alg "$SIG_ALG" \
   --adversary-features \
   --sac-heuristic-hint \
   --sac-gradient-steps 2 \
