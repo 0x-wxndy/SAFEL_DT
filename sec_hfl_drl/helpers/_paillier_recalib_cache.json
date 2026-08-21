@@ -1,0 +1,9 @@
+{
+  "vec_size": 12299,
+  "c_auth": 0.004519,
+  "c_verify": 0.005986,
+  "c_enc_plain": 0.000012,
+  "c_enc_p1024": 147.513,
+  "c_enc_p2048": 991.178,
+  "_host_note": "Calibrated on the same Windows x86 host that produced sweep_headline/. 12,299-param N-BaIoT MLP. Paillier numbers come from the python-paillier library; c_auth/c_verify are ECDSA via cryptography.io."
+}

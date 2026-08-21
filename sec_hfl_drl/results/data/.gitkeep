@@ -1,0 +1,3 @@
+# Placeholder so the data cache directory exists after clone.
+# Put N-BaIoT flat CSVs here (1.benign.csv … 9.*.csv), then:
+#   python -m scripts.run_sweep --dataset nbaiot --data-dir results/data ...

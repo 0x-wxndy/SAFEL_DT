@@ -1,0 +1,51 @@
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# --- Datasets / experiment outputs ---
+sec_hfl_drl/results/data/*
+!sec_hfl_drl/results/data/.gitkeep
+*.csv
+!**/fixtures/**/*.csv
+sec_hfl_drl/results/runs/*
+!sec_hfl_drl/results/runs/.gitkeep
+
+# --- Env / secrets ---
+.env
+.env.*
+*.pem
+*.key
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# --- Build artifacts ---
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg

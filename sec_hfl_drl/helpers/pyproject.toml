@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "safel-dt"
+version = "0.0.0"
+description = "Secure Adaptive Federated Learning for Hierarchical Digital Twins (SAFEL-DT)."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "SAFEL-DT contributors" }]
+license = { text = "MIT" }
+keywords = [
+    "federated-learning",
+    "digital-twin",
+    "reinforcement-learning",
+    "homomorphic-encryption",
+    "byzantine-robust",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    # core ML (no torchvision: IoT-tabular pipeline)
+    "torch>=2.2",
+    "numpy>=1.26",
+    "scikit-learn>=1.4",
+    # FL
+    "flwr>=1.10",
+    # RL
+    "gymnasium>=0.29",
+    "stable-baselines3>=2.3",
+    "tianshou>=1.0.0",
+    # crypto + transport
+    "phe>=1.5",
+    "eth-account>=0.11",
+    "paho-mqtt>=2.0",
+    # config + IO
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "pandas>=2.2",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "types-PyYAML",
+    "ipykernel",
+]
+
+[project.urls]
+Homepage = "https://example.invalid/safel-dt"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests", "scripts", "analysis"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B"]
+"_scaffold.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_ignores = true
+ignore_missing_imports = true
+files = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "slow: long-running integration tests",
+    "requires_nbaiot: needs cached or downloadable N-BaIoT dataset",
+    "requires_edge_iiotset: needs cached Edge-IIoTset dataset",
+    "requires_toniot: needs cached TON_IoT network-flow CSV",
+]

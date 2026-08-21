@@ -1,0 +1,14 @@
+# TON_IoT (Moustafa et al. 2020): IoT/IIoT IDS, network-flow slice.
+dataset:
+  name: toniot
+  mode: binary                # or "multi" for 10-class
+  num_clients: 9              # match N-BaIoT's 9-client topology
+  max_samples: null           # null = use all ~211k flows
+  test_fraction: 0.2
+  normalise: true
+model:
+  name: mlp
+  hidden: 64
+client_to_fog:
+  strategy: contiguous
+fogs: 3
